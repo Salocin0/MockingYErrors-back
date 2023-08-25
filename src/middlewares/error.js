@@ -1,7 +1,7 @@
 import EErrors from '../services/errors/enums.js';
 
 export default (error, req, res, next) => {
-  console.log(error.cause);
+  req.logger.error(error).cause;
   switch (error.code) {
     case EErrors.SERVER_ERROR:
       res.status(500).send({ status: 'error', error: error.name, cause: error.cause });

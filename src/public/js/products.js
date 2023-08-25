@@ -1,3 +1,4 @@
+import { loggerDev } from "../../utils/logger";
 let cartid = '';
 
 document.addEventListener('click', function (event) {
@@ -18,11 +19,11 @@ function getProduct(pid, callback) {
       const respuesta = JSON.parse(xhr.responseText);
       callback(respuesta.data);
     } else {
-      console.error('La solicitud falló con un código de estado: ' + xhr.status);
+      loggerDev.error('La solicitud falló con un código de estado: ' + xhr.status);
     }
   };
   xhr.onerror = function () {
-    console.error('Error de red al realizar la solicitud');
+    loggerDev.error('Error de red al realizar la solicitud');
   };
   xhr.send();
 }
@@ -51,11 +52,11 @@ function addCart(pid) {
       if (xhr.status >= 200 && xhr.status < 400) {
         const respuesta = JSON.parse(xhr.responseText);
       } else {
-        console.error('La solicitud falló con un código de estado: ' + xhr.status);
+        loggerDev.error('La solicitud falló con un código de estado: ' + xhr.status);
       }
     };
     xhr.onerror = function () {
-      console.error('Error de red al realizar la solicitud');
+      loggerDev.error('Error de red al realizar la solicitud');
     };
     xhr.send(cuerpo);
   });

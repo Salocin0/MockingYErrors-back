@@ -43,14 +43,8 @@
         },
       })
         .then((response) => {
-          if (response.ok) {
-            console.log("Compra realizada con éxito");
-          } else {
-            console.error("Error al realizar la compra");
-          }
         })
         .catch((error) => {
-          console.error("Error en la solicitud:", error);
         });
     });
   });

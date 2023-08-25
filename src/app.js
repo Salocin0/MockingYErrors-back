@@ -19,6 +19,8 @@ import passport from 'passport';
 import { iniPassport } from './config/passport.config.js';
 import errorHandler from "./middlewares/error.js";
 import compression from 'express-compression';
+import { addLogger } from './utils/logger.js';
+import {loggerDev} from './utils/logger.js'
 
 const app = express();
 const port = 8080;
@@ -36,6 +38,8 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+app.use(addLogger);
 
 app.use(compression({brotli:{enable:true,zlib:{}},}));
 
@@ -57,6 +61,17 @@ app.use('/vista/products', routerVistaProducts);
 app.use('/', viewsRouter);
 app.use('/api/sessions', loginRouter);
 app.get('/api/sessions/github', passport.authenticate('github', { scope: ['user:email'] }));
+app.get('/loggerTest', (req, res) => {
+  req.logger.debug('debug');
+  req.logger.http('http');
+  req.logger.info('info');
+  req.logger.warn('warn');
+  req.logger.error('error');
+  return res.status(200).json({
+    status: 'success',
+    msg: 'all logs'
+  });
+});
 
 app.get('/api/sessions/githubcallback', passport.authenticate('github', { failureRedirect: '/error-autentificacion' }), (req, res) => {
   req.session.firstName = req.user.firstName;
@@ -77,7 +92,7 @@ app.get('*', (req, res) => {
 });
 
 const httpServer = app.listen(port, () => {
-  console.log('Servidor escuchando en el puerto ' + port);
+  loggerDev.info('Servidor escuchando en el puerto ' + port);
 });
 
 const socketServer = new Server(httpServer);

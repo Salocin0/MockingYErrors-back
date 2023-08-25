@@ -92,7 +92,6 @@ class CartService {
     this.validateProduct(pid);
     const cart = await this.getCart(cid);
     let existingProduct = cart.products.find(p => p.id._id.toString() === pid.toString());
-    console.log(existingProduct);
     
     if (existingProduct) {
         existingProduct.quantity += 1;

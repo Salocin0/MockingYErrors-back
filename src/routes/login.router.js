@@ -1,6 +1,7 @@
 import express from 'express';
 import passport from 'passport';
 import { DTOsession } from '../DAO/DTO/session.dto.js';
+import { loggerDev } from '../utils/logger.js';
 
 export const loginRouter = express.Router();
 
@@ -34,7 +35,7 @@ loginRouter.post('/login', passport.authenticate('login', { failureRedirect: '/e
 loginRouter.get('/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      console.error('Error al cerrar sesión:', err);
+      loggerDev.error('Error al cerrar sesión:', err);
     }
     res.redirect('/');
   });
